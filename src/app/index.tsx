@@ -1,49 +1,28 @@
-import { useState } from "react";
-import { Text, View, Button, StyleSheet } from "react-native";
+import { Stack } from "expo-router";
+import { FlatList, StyleSheet } from "react-native";
 
+import ArtikullRresht from "@/components/ArtikullRresht";
 import Pershendetje from "@/components/Pershendetje";
+import { artikujt } from "@/data/artikujt";
 
 export default function Index() {
-  // React Compiler është aktiv në app.json; e çaktivizojmë për këtë ekran
-  // që shembulli me "let" të sillet ashtu siç e shpjegojmë.
-  "use no memo";
-
-  // Variabël e zakonshme: krijohet nga e para (me 0) në çdo rivizatim.
-  let numriLet = 0;
-
-  // Gjendje: React e mban vlerën mes rivizatimeve.
-  const [numri, setNumri] = useState(0);
-
-  function rritLet() {
-    numriLet = numriLet + 1;
-    console.log("numriLet =", numriLet);
-  }
-
-  function rritState() {
-    setNumri((n) => n + 1);
-  }
-
   return (
-    <View style={styles.container}>
-      <Pershendetje emri="Arlind" />
-
-      <Text style={styles.teksti}>numriLet: {numriLet}</Text>
-      <Button title="Rrit let" onPress={rritLet} />
-
-      <Text style={styles.teksti}>numri (useState): {numri}</Text>
-      <Button title="Rrit useState" onPress={rritState} />
-    </View>
+    <>
+      <Stack.Screen options={{ title: "Servise klimash" }} />
+      <FlatList
+        data={artikujt}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => <ArtikullRresht artikull={item} />}
+        ListHeaderComponent={<Pershendetje emri="Arlind" />}
+        contentContainerStyle={styles.lista}
+      />
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+  lista: {
+    padding: 16,
     gap: 12,
-  },
-  teksti: {
-    fontSize: 18,
   },
 });
